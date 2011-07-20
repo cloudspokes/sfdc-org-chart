@@ -1,0 +1,68 @@
+<apex:page controller="OrgChartController" sidebar="false" title="Organization Chart">
+<!-- Copyright 2011 Radial Web Solutions LLC --> 
+
+<apex:stylesheet value="{!URLFOR($Resource.OrgChartCSS)}"/>
+
+<style>
+	.expandIcon {
+		width:16px;
+		height:16px;
+		background-image: url('{!URLFOR($Resource.OrgChartPng)}');
+		background-repeat: no-repeat;
+	}
+</style>
+<script type='text/javascript' src='https://www.google.com/jsapi'></script>
+
+<apex:form >
+	<apex:actionFunction name="loadMore" action="{!loadMore}" rerender="chartPanel" status="status" oncomplete="drawChart();">
+		<apex:param name="firstParam" value="" assignTo="{!roleId}"/>
+	</apex:actionFunction>
+</apex:form>
+
+<apex:outputPanel id="chartPanel" layout="block">
+
+    <script type='text/javascript'>
+      google.load('visualization', '1', {packages:['orgchart']});
+      google.setOnLoadCallback(drawChart);
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Name');
+        data.addColumn('string', 'Manager');
+        
+        <apex:repeat value="{!rolesWithUsersList}" var="u">
+        	data.addRow([{v:'{!u.id}'
+        		, f:'{!JSENCODE(u.roleBody)}'}
+        		, '{!u.parent}']);
+        </apex:repeat>
+        
+        
+        
+        var chart = new google.visualization.OrgChart(document.getElementById('chart_div'));
+        chart.draw(data, {allowHtml:true, allowCollapse:true, size:'medium', nodeClass:'nodeChartCell', selectedNodeClass:'nodeChartCellSelect'});
+       }
+    </script>
+
+<apex:sectionHeader title="CloudSpokes Challenge" subtitle="Organization Chart"/>
+<apex:pageBlock mode="maindetail">
+	<apex:pageBlockButtons >
+		<apex:form >
+			<apex:commandButton action="{!expandAll}" value="Expand All" status="status"/>
+			<apex:commandButton action="{!collapseAll}" value="Collapse All" status="status"/>
+			<apex:actionStatus id="status">
+				<apex:facet name="start"><img height="16px" src="/img/loading32.gif"/>&nbsp;<i>Working</i></apex:facet>
+				<apex:facet name="stop"></apex:facet>
+			</apex:actionStatus>    
+		</apex:form>
+	</apex:pageBlockButtons>
+
+
+    	
+    <div class="chartFrame" id='chart_div'></div>
+</apex:pageBlock>
+
+</apex:outputPanel>
+
+
+
+
+</apex:page>

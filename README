@@ -1,0 +1,13 @@
+Salesforce.com Org Chart
+
+URL: http://www.cloudspokes.com/challenge_detail.html?contestID=152
+Blog: http://blog.cloudspokes.com/2011/04/salesforcecom-org-chart-winner.html
+Challenge end date: Mon Apr 04 05:00:00 GMT 2011
+
+Description
+===========
+We&#39;d like to create a Visualforce page that displays an Org Chart for Salesforce.com users. The chart should be displayed using the Google Visualization API.
+
+Requirements
+============
+Using a Developer org, create a Visualforce page and Apex controller that displays an Org Chart for the current active users. Displaying titles is optional but it would be nice. Ideally, place the business logic for the Org Chart creation in a separate Apex class that is called by the controller.
